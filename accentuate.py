@@ -21,7 +21,9 @@ if len(sys.argv) > 1:
     if sys.argv[2]:
         if os.path.getsize(sys.argv[2]) > 0:
             print(f"Warning: {sys.argv[2]} exists!")
-            exit()
+            print(f"Do you want to overwrite {sys.argv[2]}? (y/n)")
+            if input() != "y":
+                exit()
         else:
             output_filename = sys.argv[2]
     #print(input_file_size)
