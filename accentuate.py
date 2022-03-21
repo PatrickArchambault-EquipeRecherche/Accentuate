@@ -28,10 +28,10 @@ if len(sys.argv) > 1:
             output_filename = sys.argv[2]
     #print(input_file_size)
 
-def fixAllTheCells(input_filename, output_filename):
+def fixAllTheCells(input_filename, output_filename, d_limiter=","):
     with open(input_filename, "r", newline="") as inf, \
          open(output_filename, "w", newline="") as outf:
-        inreader = csv.reader(inf, delimiter=";")
+        inreader = csv.reader(inf, delimiter=d_limiter)
         outwriter = csv.writer(outf)
         for row in inreader:
             newrow = []
@@ -40,4 +40,4 @@ def fixAllTheCells(input_filename, output_filename):
                 newrow.append(ftfy.fix_text(cell))
             outwriter.writerow(newrow)
 
-fixAllTheCells(input_filename, output_filename)
+fixAllTheCells(input_filename, output_filename, d_limiter=";")
