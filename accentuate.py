@@ -36,7 +36,7 @@ def fixAllTheCells(input_filename, output_filename, d_limiter=","):
         for row in inreader:
             newrow = []
             for cell in row:
-                print(cell)
+                #print(cell)
                 newrow.append(ftfy.fix_text(cell))
             outwriter.writerow(newrow)
 
