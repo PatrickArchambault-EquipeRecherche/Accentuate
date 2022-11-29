@@ -13,31 +13,45 @@ import ftfy   # For converting encodings
 
 input_filename = "test.csv"
 output_filename = "results.csv"
+d_limiter = ";"
 
 if len(sys.argv) > 1:
     #print("Arg!")
-    if sys.argv[1]:
+    try:
         input_filename = sys.argv[1]
+    except IndexError:
+        print("No arguments!")
+        exit()
     if sys.argv[2]:
-        if os.path.getsize(sys.argv[2]) > 0:
+        try:
+            os.path.getsize(sys.argv[2])
             print(f"Warning: {sys.argv[2]} exists!")
             print(f"Do you want to overwrite {sys.argv[2]}? (y/n)")
-            if input() != "y":
+            if input() == "y":
+                output_filename = sys.argv[2]
+            else:
                 exit()
-        else:
+        except FileNotFoundError:
             output_filename = sys.argv[2]
-    #print(input_file_size)
+    try:
+        d_limiter = sys.argv[3]
+        #print(sys.argv[3])
+    except IndexError:
+        pass
+
 
 def fixAllTheCells(input_filename, output_filename, d_limiter=","):
     with open(input_filename, "r", newline="") as inf, \
-         open(output_filename, "w", newline="") as outf:
+         open(output_filename, "w", newline="", encoding="utf-8") as outf:
         inreader = csv.reader(inf, delimiter=d_limiter)
-        outwriter = csv.writer(outf)
+        outwriter = csv.writer(outf, delimiter=d_limiter)
         for row in inreader:
+            #print(row)
             newrow = []
             for cell in row:
                 #print(cell)
                 newrow.append(ftfy.fix_text(cell))
             outwriter.writerow(newrow)
 
-fixAllTheCells(input_filename, output_filename, d_limiter=";")
+if __name__ == "__main__":
+    fixAllTheCells(input_filename, output_filename, d_limiter=";")
