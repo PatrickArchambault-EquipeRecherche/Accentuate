@@ -22,7 +22,8 @@ if len(sys.argv) > 1:
     except IndexError:
         print("No arguments!")
         exit()
-    if sys.argv[2]:
+    try:
+        sys.argv[2]
         try:
             os.path.getsize(sys.argv[2])
             print(f"Warning: {sys.argv[2]} exists!")
@@ -33,9 +34,15 @@ if len(sys.argv) > 1:
                 exit()
         except FileNotFoundError:
             output_filename = sys.argv[2]
+    except IndexError:
+        print('No output filename provided, saving as "results.csv", which will overwrite that file if it exists. Continue? (y/n)')
+        if input() == "y":
+            pass
+        else:
+            exit()
     try:
         d_limiter = sys.argv[3]
-        #print(sys.argv[3])
+        print(sys.argv[3])
     except IndexError:
         pass
 
@@ -50,7 +57,8 @@ def fixAllTheCells(input_filename, output_filename, d_limiter=","):
             newrow = []
             for cell in row:
                 #print(cell)
-                newrow.append(ftfy.fix_text(cell))
+                newcell = ftfy.fix_text(cell)
+                newrow.append(newcell)
             outwriter.writerow(newrow)
 
 if __name__ == "__main__":
